@@ -8,6 +8,7 @@ using E_Commerce.Services.MappingProfiles;
 using E_Commerce.Services_Abstraction;
 using E_Commerce.Web.Extenions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace E_Commerce.Web
 {
@@ -29,7 +30,7 @@ namespace E_Commerce.Web
             });
             builder.Services.AddScoped<IDataInitializer, DataInitializer>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddAutoMapper(x => x.AddProfile<ProductProfile>());
+            builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly);
             builder.Services.AddScoped<IProductService, ProductService>();
 
             #endregion
@@ -54,7 +55,8 @@ namespace E_Commerce.Web
             }
 
             app.UseHttpsRedirection();
-
+            
+            app.UseStaticFiles();
             app.UseAuthorization();
 
             app.MapControllers();
